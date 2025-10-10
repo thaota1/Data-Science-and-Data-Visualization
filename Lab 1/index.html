@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab 1</title>
+
+  <!-- CSS LINK -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h3 id="name">Tạ Thị Phương Thảo</h3>
+  <h4 id="student-id">ITDSIU20082</h4>
+  <h4 id="course-title">Data Science and Data Visualization</h4>
+  <h4 id="lab-title">Lab 1 - Introduction to HTML, CSS, SVG, and JavaScript</h4>
+  <p id="statement">
+    This is all my own work. I did not copy the code from any other source.
+  </p>
+  <h3 class="svg-title">TA THI PHUONG THAO</h3>
+    <!-- SVG initials Ta Thi Phuong Thao (TTPT) -->
+  <svg id="initials" width="250" height="150">
+    <!-- T -->
+    <line x1="20" y1="30" x2="60" y2="30" class="letter" />
+    <line x1="40" y1="30" x2="40" y2="120" class="letter" />
+
+    <!-- T -->
+    <line x1="80" y1="30" x2="120" y2="30" class="letter" />
+    <line x1="100" y1="30" x2="100" y2="120" class="letter" />
+
+    <!-- P -->
+    <line x1="140" y1="30" x2="140" y2="120" class="letter" />
+    <polyline points="140,30 180,30 180,70 140,70" class="letter" />
+
+    <!-- T -->
+    <line x1="200" y1="30" x2="240" y2="30" class="letter" />
+    <line x1="220" y1="30" x2="220" y2="120" class="letter" />
+  </svg>
+ <!-- Histogram -->
+ <h3>Histogram of letters "TA THI PHUONG THAO"</h3>
+  <svg id="histogram" width="350" height="300"></svg>
+
+  <script>
+    // Helper function: create and add SVG element
+    function addEltToSVG(svg, name, attrs) {
+      const element = document.createElementNS("http://www.w3.org/2000/svg", name);
+      for (let key in attrs) element.setAttributeNS(null, key, attrs[key]);
+      svg.appendChild(element);
+      return element;
+    }
+
+    // === REQUIRED FUNCTION ===
+    function createHistogram(svgElt, str) {
+      const bins = [
+        {range: "A-D", count: 0},
+        {range: "E-H", count: 0},
+        {range: "I-L", count: 0},
+        {range: "M-P", count: 0},
+        {range: "Q-U", count: 0},
+        {range: "V-Z", count: 0},
+      ];
+
+      str = str.toUpperCase();
+      for (let ch of str) {
+        if (ch >= "A" && ch <= "D") bins[0].count++;
+        else if (ch >= "E" && ch <= "H") bins[1].count++;
+        else if (ch >= "I" && ch <= "L") bins[2].count++;
+        else if (ch >= "M" && ch <= "P") bins[3].count++;
+        else if (ch >= "Q" && ch <= "U") bins[4].count++;
+        else if (ch >= "V" && ch <= "Z") bins[5].count++;
+      }
+
+      // DRAW AXES
+      addEltToSVG(svgElt, "line", {x1: 40, y1: 20, x2: 40, y2: 260, stroke: "black"});
+      addEltToSVG(svgElt, "line", {x1: 40, y1: 260, x2: 340, y2: 260, stroke: "black"});
+
+      // Y grid + labels
+      for (let i = 0; i <= 4; i++) {
+        const y = 260 - i * 50;
+        addEltToSVG(svgElt, "line", {
+          x1: 40, y1: y, x2: 340, y2: y,
+          stroke: "lightgray", "stroke-dasharray": "2,2"
+        });
+        addEltToSVG(svgElt, "text", {
+          x: 25, y: y + 5, "font-size": "12", "text-anchor": "end"
+        }).textContent = i;
+      }
+
+      // DRAW BARS
+      bins.forEach((bin, i) => {
+        const x = 50 + i * 50;
+        const barHeight = bin.count * 50 || 1; // each letter = 50px
+        const y = 260 - barHeight;
+        addEltToSVG(svgElt, "rect", {
+          x: x, y: y, width: 40, height: barHeight,
+          fill: "blue", stroke: "black"
+        });
+        // number above bar
+        addEltToSVG(svgElt, "text", {
+          x: x + 20, y: y - 5, "font-size": "12", "text-anchor": "middle"
+        }).textContent = bin.count;
+        // label under bar
+        addEltToSVG(svgElt, "text", {
+          x: x + 20, y: 275, "font-size": "12", "text-anchor": "middle"
+        }).textContent = bin.range;
+      });
+    }
+
+    // === RUNNING FUNCTION ===
+    window.onload = function() {
+      const svg = document.getElementById("histogram");
+      createHistogram(svg, "TA THI PHUONG THAO");
+    };
+  </script>
+</body>
+</html>

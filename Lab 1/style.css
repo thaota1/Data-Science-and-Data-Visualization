@@ -1,0 +1,30 @@
+/* name color */
+#name {
+  color: blue;
+}
+
+/* student ID and course title: bold font */
+#student-id, 
+#course-title {
+  font-weight: bold;
+}
+
+/* lab title: italics only */
+#lab-title {
+    font-weight: normal;
+  font-style: italic;
+}
+/* SVG font path */
+#initials {
+  border: 1px solid #ccc;
+  background-color: white;
+  display: block;
+  margin: left;
+}
+
+.letter {
+  stroke: green;
+  stroke-width: 8;   
+  stroke-linecap: round;
+  fill: none;
+}
