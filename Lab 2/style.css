@@ -1,0 +1,47 @@
+/* ====== GENERAL INFO SECTION ====== */
+body {
+  background-color: #fafafa;
+  color: #000;
+  margin: 30px 60px;
+}
+
+/* ====== GLOBAL TEXT STYLES ====== */
+.axis-label {
+  font-size: 13px;
+  font-weight: bold;
+  fill: #333;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: bold;
+  fill: #040405;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: bold;
+  fill: #333;
+}
+/* ====== TASK 1: BAR CHART ====== */
+#barChart {
+  background-color: #fafafa;
+  border-radius: 10px;
+}
+/* ====== TASK 2: SCATTER PLOT ====== */
+.pt.fail { fill: red; }
+.pt.pass { fill: steelblue; }
+
+.legend text.legend-label { font-size: 12px; fill: #333; }
+.legend circle { stroke: #444; stroke-width: 0.5; }
+/* ====== TASK 3: HISTOGRAM ====== */
+.bar {
+  fill: #094b8d;
+}
+.bar:hover {
+  fill: #094b8d;
+}
+
+.bar.max {
+  fill: red !important;
+}

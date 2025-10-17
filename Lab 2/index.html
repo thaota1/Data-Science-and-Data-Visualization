@@ -1,0 +1,262 @@
+<!-- TASK 0. Info-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab 2</title>
+
+  <!-- CSS LINK -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- D3 -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <!-- Header Info -->
+  <h3 id="name">Tạ Thị Phương Thảo</h3>
+  <h4 id="student-id">ITDSIU20082</h4>
+  <h4 id="course-title">Data science and data visualization</h4>
+  <h4 id="lab-title">Lab 2 – Introduction to D3.js</h4>
+  <p id="statement">
+    This is all my own work. I did not copy the code from any other source.
+  </p>
+
+  <!-- TASK 1. BAR CHART -->
+  <h3>TASK 1. BAR CHART</h3>
+<svg id="barChart" width="750" height="320"></svg>
+<script>
+  // RANDOM ARRAY FROM 5-25
+  const data = Array.from({ length: 20 }, () => Math.floor(Math.random() * 21) + 5);
+
+  const svg = d3.select("#barChart");
+  const width = +svg.attr("width");
+  const height = +svg.attr("height");
+  const leftRightPad = 20;           
+  const gap = 4;                       
+  const barWidth = (width - leftRightPad * 2) / data.length;
+
+  // SCALING THE BAR 
+  const colorScale = d3.scaleLinear()
+    .domain([d3.min(data), d3.max(data)])
+    .range(["#7fb3ff", "#0022cc"]);    
+
+  // DRAW BAR
+  svg.selectAll("rect")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("x", (d, i) => leftRightPad + i * barWidth)
+    .attr("y", d => height - d * 10 - 20)
+    .attr("width", barWidth - gap)
+    .attr("height", d => d * 10)
+    .attr("fill", d => colorScale(d))
+    .attr("stroke", "white")
+    .attr("stroke-width", 1);
+
+  // ADD VALUE ON THE BAR
+  svg.selectAll("text")
+    .data(data)
+    .enter()
+    .append("text")
+    .text(d => d)
+    .attr("x", (d, i) => leftRightPad + i * barWidth + (barWidth - gap) / 2)
+    .attr("y", d => height - d * 10 - 25) 
+    .attr("class", "bar-label")          
+    .attr("text-anchor", "middle");
+</script>
+
+  <!-- TASK 2. SCATTER PLOT -->
+  <h3>TASK 2. SCATTER PLOT</h3>
+  <svg id="scatterplot" width="500" height="400"></svg>
+
+ <script>
+  d3.csv("https://tungth.github.io/data/vis-lab2-data.csv").then(data => {
+    data.forEach(d => {
+      d.Midterm = +d.Midterm;
+      d.Final = +d.Final;
+    });
+    drawScatterPlot(data);
+  });
+
+  function drawScatterPlot(data) {
+    const svg = d3.select("#scatterplot");
+    const width = 800;
+    const height = 400;
+    svg.attr("width", width).attr("height", height);
+
+    const margin = { top: 20, right: 300, bottom: 40, left: 50 }; 
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
+    const chart = svg.append("g")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    const xScale = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.Midterm)])
+      .range([0, innerWidth]);
+
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.Final)])
+      .range([innerHeight, 0]);
+
+    // axes
+    chart.append("g")
+      .attr("transform", `translate(0, ${innerHeight})`)
+      .call(d3.axisBottom(xScale));
+    chart.append("g").call(d3.axisLeft(yScale));
+
+    // labels
+    chart.append("text")
+      .attr("x", innerWidth / 2)
+      .attr("y", innerHeight + 35)
+      .attr("text-anchor", "middle")
+      .attr("class", "axis-label")
+      .text("Midterm Score");
+
+    chart.append("text")
+      .attr("x", -innerHeight / 2)
+      .attr("y", -35)
+      .attr("text-anchor", "middle")
+      .attr("class", "axis-label")
+      .attr("transform", "rotate(-90)")
+      .text("Final Score");
+
+    // points
+    chart.selectAll("circle")
+      .data(data)
+      .enter()
+      .append("circle")
+      .attr("cx", d => xScale(d.Midterm))
+      .attr("cy", d => yScale(d.Final))
+      .attr("r", 5)
+      .attr("class", d => (0.4 * d.Midterm + 0.6 * d.Final) < 50 ? "pt fail" : "pt pass");
+
+    // title
+    chart.append("text")
+      .attr("x", innerWidth / 2)
+      .attr("y", -5)
+      .attr("text-anchor", "middle")
+      .attr("class", "title")
+      .text("Student Scores: Midterm vs Final");
+
+    // legend
+    const legend = svg.append("g")
+      .attr("class", "legend")
+      .attr("transform", `translate(${width - margin.right + 20}, ${margin.top + 70})`);
+
+    const legendData = [
+      { cls: "pt fail", label: "Total < 50 (Students who cannot pass the course)" },
+      { cls: "pt pass", label: "Total ≥ 50 (Students who can pass the course )" }
+    ];
+
+    legend.selectAll("circle")
+      .data(legendData)
+      .enter().append("circle")
+      .attr("cx", 0)
+      .attr("cy", (d, i) => i * 30)
+      .attr("r", 8) 
+      .attr("class", d => d.cls);
+
+    legend.selectAll("text")
+      .data(legendData)
+      .enter().append("text")
+      .attr("x", 18)
+      .attr("y", (d, i) => i * 30 + 5)
+      .attr("class", "legend-label")
+      .attr("alignment-baseline", "middle")
+      .text(d => d.label);
+  }
+</script>
+
+  <!-- TASK 3. HISTOGRAM -->
+  <h3 style="margin-top: 40px;">TASK 3. HISTOGRAM</h3>
+  <svg id="histogram" width="700" height="400"></svg>
+<script>
+  d3.csv("https://tungth.github.io/data/vis-lab2-data.csv").then(data => {
+    data.forEach(d => {
+      d.Midterm = +d.Midterm;
+      d.Final = +d.Final;
+      d.Total = 0.4 * d.Midterm + 0.6 * d.Final;
+    });
+    drawHistogram(data);
+  });
+
+  function drawHistogram(data) {
+    const svg = d3.select("#histogram");
+    const width = +svg.attr("width");
+    const height = +svg.attr("height");
+    const margin = { top: 40, right: 30, bottom: 60, left: 60 };
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
+    const chart = svg.append("g")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    const xScale = d3.scaleLinear()
+      .domain([0, 100])
+      .range([0, innerWidth]);
+
+    const histogram = d3.histogram()
+      .domain(xScale.domain())
+      .thresholds(xScale.ticks(10))
+      .value(d => d.Total);
+
+    const bins = histogram(data);
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(bins, d => d.length)])
+      .range([innerHeight, 0])
+      .nice();
+
+    const maxBin = d3.max(bins, d => d.length);
+
+    chart.selectAll("rect")
+      .data(bins)
+      .enter()
+      .append("rect")
+      .attr("x", d => xScale(d.x0) + 2)
+      .attr("y", d => yScale(d.length))
+      .attr("width", d => xScale(d.x1) - xScale(d.x0) - 4)
+      .attr("height", d => innerHeight - yScale(d.length))
+      .attr("rx", 4)
+      .attr("ry", 4)
+      .attr("class", d => d.length === maxBin ? "bar max" : "bar");
+
+    chart.selectAll(".label")
+      .data(bins)
+      .enter()
+      .append("text")
+      .attr("class", "label")
+      .attr("x", d => xScale(d.x0) + (xScale(d.x1) - xScale(d.x0)) / 2)
+      .attr("y", d => yScale(d.length) - 6)
+      .attr("text-anchor", "middle")
+      .text(d => d.length > 0 ? d.length : "");
+
+    chart.append("g")
+      .attr("transform", `translate(0, ${innerHeight})`)
+      .call(d3.axisBottom(xScale).ticks(10));
+
+    chart.append("g").call(d3.axisLeft(yScale));
+
+    chart.append("text")
+      .attr("x", innerWidth / 2)
+      .attr("y", innerHeight + 45)
+      .attr("text-anchor", "middle")
+      .attr("class", "axis-label")
+      .text("Total Score");
+
+    chart.append("text")
+      .attr("x", -innerHeight / 2)
+      .attr("y", -45)
+      .attr("text-anchor", "middle")
+      .attr("class", "axis-label")
+      .attr("transform", "rotate(-90)")
+      .text("Number of Students");
+
+    chart.append("text")
+      .attr("x", innerWidth / 2)
+      .attr("y", -10)
+      .attr("text-anchor", "middle")
+      .attr("class", "title")
+      .text("Distribution of Total Scores (10 Bins)");
+  }
+</script>
