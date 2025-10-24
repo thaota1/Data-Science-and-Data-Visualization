@@ -1,0 +1,79 @@
+/* ========== GLOBAL SETTINGS ========== */
+* {
+  box-sizing: border-box;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+body {
+  margin: 24px;
+  background: #f0f0f0;  
+  color: #222;          
+}
+
+/* ========== HEADERS & TEXT ========== */
+h1 {
+  font-size: 20px;
+  margin: 0 0 12px;
+}
+
+.hint {
+  opacity: .8;
+  margin: 0 0 18px;
+}
+
+
+.header-line {
+  font-weight: bold;
+  font-style: normal;
+  margin: 2px 0;
+}
+
+.statement {
+    font-weight: normal;
+  margin-top: 8px;
+}
+.hint{
+    font-weight: normal;
+    color: black;
+}
+/* ========== SVG CHART STYLE ========== */
+svg {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.25);
+}
+
+/* ========== AXES ========== */
+.axis text {
+  fill: #111;
+  font-size: 12px;
+  font-weight: bold;  /* axis labels bold */
+}
+
+.axis path,
+.axis line {
+  stroke: #888;
+  shape-rendering: crispEdges;
+}
+
+/* ========== POINTS & LEGEND ========== */
+.dot { opacity: .9; }
+
+.legend {
+  font-size: 11px;
+  fill: #333;
+}
+
+/* ========== TOOLTIP ========== */
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: #000;
+  color: #fff;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  opacity: 0;
+  transform: translate(-50%, -120%);
+  white-space: nowrap;
+}
