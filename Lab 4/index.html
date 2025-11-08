@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab 4</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- D3 v7 -->
+  <script src="https://d3js.org/d3.v7.min.js" defer></script>
+
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- Header Info -->
+  <h3 id="name">Tạ Thị Phương Thảo</h3>
+  <h4 id="student-id">ITDSIU20082</h4>
+  <h4 id="course-title">Data science and data visualization</h4>
+  <h4 id="lab-title">Lab 4 – D3.js - Transition, Update, Enter & Exit</h4>
+  <p id="statement">
+    This is all my own work. I did not copy the code from any other source.
+  </p>
+
+  <!-- Controls -->
+  <button id="add-btn">Add province</button>
+  <button id="remove-btn">Remove last province</button>
+
+  <label for="sort-select">Sort by:</label>
+  <select id="sort-select">
+    <option value="original">Original order</option>
+    <option value="name-asc">Province name A → Z</option>
+    <option value="grdp-desc">GRDP high → low</option>
+    <option value="grdp-asc">GRDP low → high</option>
+  </select>
+
+  <!-- Chart -->
+  <svg id="chart" width="960" height="620"></svg>
+</body>
+</html>
