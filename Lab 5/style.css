@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 20px;
+    background-color: #ffffff;   /* nền trắng */
+    color: #000000;              /* chữ đen */
+}
+
+#chart {
+    position: relative;
+    margin-top: 20px;
+}
+
+svg {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+}
+
+.tooltip {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+
+    background-color: rgba(0, 70, 150, 0.9);
+    color: #ffffff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #003366;
+    font-size: 12px;
+    white-space: nowrap;
+}
